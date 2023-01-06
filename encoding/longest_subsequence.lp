@@ -53,3 +53,4 @@ value(0,L) :- value(M,L), num_strings(M).
 
 #show c/3.
 % #show value/2. 
+% #show value/2. 
