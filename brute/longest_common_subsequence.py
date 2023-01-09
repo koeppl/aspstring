@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import itertools
 from tqdm import tqdm
+import time
 
 import argparse
 
@@ -31,6 +32,7 @@ num_combinations = 1<<n
 best_length = 0
 best_subsequence = ''
 
+start_time = time.time()
 with tqdm(generator, total=num_combinations) as t:
 	for selection in t:
 		selected_chars = []
@@ -45,4 +47,4 @@ with tqdm(generator, total=num_combinations) as t:
 		best_length = len(selected_text)
 		best_subsequence = selected_text
 		t.set_description(f'{best_length}')
-print(f'RESULT length={best_length} subsequence={best_subsequence}')
+print(f'RESULT length={best_length} subsequence={best_subsequence} seconds={time.time() - start_time}')

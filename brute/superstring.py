@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import itertools
-import sys
+import time
 from tqdm import tqdm
 import math
 
@@ -36,6 +36,7 @@ best_length = len(best_superstring)
 for string in strings:
 	assert string in best_superstring
 
+start_time = time.time()
 with tqdm(generator, total=num_combinations) as t:
 	for pi in t:
 		assert len(pi) == m
@@ -51,7 +52,7 @@ with tqdm(generator, total=num_combinations) as t:
 			t.set_description(f'{best_length}')
 			for string in strings:
 				assert string in best_superstring
-print(f'RESULT length={best_length} superstring={best_superstring}')
+print(f'RESULT length={best_length} superstring={best_superstring} seconds={time.time() - start_time}')
 
 
 

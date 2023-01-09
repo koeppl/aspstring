@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 import itertools
 from tqdm import tqdm
+import time
+import os
+
+resultPrefix='RESULT '
 
 def hamming_distance(textA, textB):
 	assert len(textA) <= len(textB), f'{textA} must be at least as long as {textB}'
@@ -12,7 +16,7 @@ def max_hamming_distance(text, strings):
 def local_hamming_distance(text : str, string : str):
 	n = len(string)
 	min_dist = len(text)
-	for offset in range(n - len(text)):
+	for offset in range(n + 1 - len(text)):
 		local_dist = hamming_distance(text, string[offset:])
 		if local_dist < min_dist:
 			min_dist = local_dist
@@ -34,6 +38,7 @@ def closest_string(strings):
 	best_distance = len(strings[0])
 	best_text = ''
 
+	start_time = time.time()
 	with tqdm(generator, total=num_combinations) as t:
 		for text in t:
 			distance = max_hamming_distance(text, strings)
@@ -43,7 +48,7 @@ def closest_string(strings):
 				best_text = text 
 				if distance == 0: 
 					break
-	print(f'RESULT distance={best_distance} closeststring={"".join(best_text)}')
+	print(f'{resultPrefix} distance={best_distance} closeststring={"".join(best_text)} seconds={time.time() - start_time} length=0')
 
 def closest_substring(strings, length : int):
 	alphabet = set(); [alphabet := alphabet.union(set(x)) for x in strings]
@@ -54,6 +59,7 @@ def closest_substring(strings, length : int):
 	best_distance = len(strings[0])
 	best_text = ''
 
+	start_time = time.time()
 	with tqdm(generator, total=num_combinations) as t:
 		for text in t:
 			text = ''.join(text)
@@ -64,7 +70,7 @@ def closest_substring(strings, length : int):
 				best_text = text 
 				if distance == 0: 
 					break
-	print(f'RESULT distance={best_distance} closeststring={"".join(best_text)} length={length}')
+	print(f'{resultPrefix} distance={best_distance} closeststring={"".join(best_text)} length={length} seconds={time.time() - start_time}')
 
 
 import argparse
@@ -75,6 +81,7 @@ parser.add_argument("--length", type=int, help="substring length (lambda)", defa
 args = parser.parse_args()
 
 plaininputfilename = args.input
+resultPrefix += f'input={os.path.basename(plaininputfilename)} '
 
 
 strings=[]

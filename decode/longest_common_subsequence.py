@@ -24,9 +24,10 @@ def decode(modelstring : str, strings):
 			assert strings[x][i] == subsequence[l]
 			if l+1 < len(parsedic[x]):
 				assert parsedic[x][l] < parsedic[x][l+1]
-	print(f'RESULT subsequence={"".join(subsequence)} length={len(subsequence)}')
+	return "".join(subsequence)
 
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='longest common subsequence')
 parser.add_argument("--log", type=str, help="log file")
@@ -36,7 +37,10 @@ args = parser.parse_args()
 
 clingologfilename = args.log
 plaininputfilename = args.input
+inputbasename = Path(plaininputfilename).with_suffix('').name
 strings = open(plaininputfilename, 'r').read().splitlines()
 
-decode(dec.extract_clingolog(clingologfilename), strings)
+subsequence = decode(dec.extract_clingolog(clingologfilename), strings)
+(total_secs, solve_secs) = dec.extract_time(clingologfilename)
 
+print(f'RESULT subsequence={"".join(subsequence)} file={inputbasename} length={len(subsequence)} solve_seconds={solve_secs} seconds={total_secs}')

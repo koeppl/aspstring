@@ -1,4 +1,5 @@
 import re
+import typing as t
 
 def unary_function(fnname : str, coding :str):
 	return int(re.sub(fnname + r'\(([0-9]+)\)', r'\1', coding))
@@ -21,3 +22,12 @@ def extract_clingolog(clingologfilename : str):
 				return lines[row-2]
 		return ''
 
+fnname='Time '
+flreg=r'(\d+\.?\d+)'
+myregex = fnname + r'\s*:\s*' + flreg + r's.* \(Solving: ' + flreg + r's.*'
+def extract_time(clingologfilename : str) -> t.Tuple[float,float]:
+		for line in open(clingologfilename,'r').readlines():
+			if line.startswith(fnname):
+				match = re.sub(myregex, r'\1 \2', line)
+				return tuple(map(lambda x: float(x), match.split(' ')))
+		return (0,0)

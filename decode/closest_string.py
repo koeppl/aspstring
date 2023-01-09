@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import decode as dec
+import typing as t
 
-def decode(modelstring : str, strings, outputlength : int):
+def decode(modelstring : str, strings, outputlength : int) -> t.Tuple[str, int]:
 	textdic = {}
 	cost = {}	
 	maxcost = 0
@@ -23,6 +24,7 @@ def decode(modelstring : str, strings, outputlength : int):
 	for pos in range(outputlength):
 		assert pos in textdic, f'pos={pos} not in textdic={textdic}'
 		text[pos] = chr(textdic[pos])
+	# print(f'candidate closest substring : {"".join(text)}')
 	# selected_text = ''.join(map(lambda pos: strings[text[pos]][pos] ,range(len(strings[0]))))
 	for k in range(len(strings)):
 		assert k in cost
@@ -31,13 +33,13 @@ def decode(modelstring : str, strings, outputlength : int):
 			localcost = dec.hamming_distance(text, strings[k][offset:]) 
 			if localcost < mincost:
 				mincost = localcost
-		assert cost[k] == mincost, f'cost[{k}] = {cost[k]} does not match with computed cost {mincost}'
+		assert cost[k] >= mincost, f'claimed cost[{k}] = {cost[k]} is lower than actual minimal cost {mincost}'
 		assert cost[max(cost, key=cost.get)] == maxcost, f'maxel {max(cost, key=cost.get)} of {cost} is not {maxcost}'
-	print(f'RESULT closeststring={"".join(text)} distance={maxcost}')
 	## check model
-	return maxcost
+	return ("".join(text), maxcost)
 
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='decode closest string')
 parser.add_argument("--log", type=str, help="log file")
@@ -48,8 +50,11 @@ args = parser.parse_args()
 
 clingologfilename = args.log
 plaininputfilename = args.input
+inputbasename = Path(plaininputfilename).with_suffix('').name
 outputlength = args.length
 strings = open(plaininputfilename, 'r').read().splitlines()
 
-decode(dec.extract_clingolog(clingologfilename), strings, outputlength)
+(text, maxcost) = decode(dec.extract_clingolog(clingologfilename), strings, outputlength)
+(total_secs, solve_secs) = dec.extract_time(clingologfilename)
 
+print(f'RESULT closeststring={"".join(text)} input={inputbasename} distance={maxcost} solve_seconds={solve_secs} seconds={total_secs} length={args.length}')

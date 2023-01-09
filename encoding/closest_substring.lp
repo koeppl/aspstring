@@ -1,6 +1,9 @@
 %%INPUT: s(X,I, c), where the k-th string at position i has character c
 
-#const lambda=3.
+%% You need to add the following additional line in the input to specify the length of the substring to return:
+% #const lambda=3. 
+
+%%%
 
 %% set the entries in the matrix to true that are defined by the input
 mat(X,I) :- s(X,I,_).

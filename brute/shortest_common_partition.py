@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import itertools
-import sys
+import time
 from tqdm import tqdm
 
 import argparse
@@ -61,6 +61,7 @@ assert Counter(strings[0]) == Counter(strings[1]), "Parikh vector of both input 
 
 
 is_finished = False
+start_time = time.time()
 with tqdm(generator, total=num_combinations) as t:
 	for (lenS, pi) in t:
 		assert len(pi) == len(lenS)
@@ -89,7 +90,7 @@ with tqdm(generator, total=num_combinations) as t:
 		factors = []
 		for x in range(len(lenS)):
 			factors.append( (posS[x], posT[x], lenS[x]) )
-		t.write(f'RESULT length={len(factors)} factors={factors}')
+		t.write(f'RESULT length={len(factors)} factors={factors} seconds={time.time() - start_time}')
 		is_finished = True
 		break
 
