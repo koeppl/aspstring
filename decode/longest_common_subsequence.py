@@ -10,6 +10,8 @@ def decode(modelstring : str, strings):
 			(x,l,i) = dec.ternary_function('c', el)
 			parsedic[x][l] = i
 	
+	if len(parsedic) == 0: #no solution
+		return ""
 	subsequence=[]
 	assert 0 in parsedic
 	for l in range(len(parsedic[0])):
@@ -43,4 +45,4 @@ strings = open(plaininputfilename, 'r').read().splitlines()
 subsequence = decode(dec.extract_clingolog(clingologfilename), strings)
 (total_secs, solve_secs) = dec.extract_time(clingologfilename)
 
-print(f'RESULT subsequence={"".join(subsequence)} file={inputbasename} length={len(subsequence)} solve_seconds={solve_secs} seconds={total_secs}')
+print(f'RESULT subsequence="{"".join(subsequence)}" file={inputbasename} length={len(subsequence)} solve_seconds={solve_secs} seconds={total_secs}')

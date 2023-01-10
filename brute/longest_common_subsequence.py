@@ -47,4 +47,4 @@ with tqdm(generator, total=num_combinations) as t:
 		best_length = len(selected_text)
 		best_subsequence = selected_text
 		t.set_description(f'{best_length}')
-print(f'RESULT length={best_length} subsequence={best_subsequence} seconds={time.time() - start_time}')
+print(f'RESULT length={best_length} subsequence="{best_subsequence}" seconds={time.time() - start_time}')

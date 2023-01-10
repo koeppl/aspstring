@@ -6,9 +6,8 @@ import math
 
 import argparse
 
-
 def overlap(first, second):
-	for length in range(1,min(len(first),len(second))+1):
+	for length in range(min(len(first),len(second)),0,-1):
 		if first[-length:] == second[:length]:
 			return length
 	return 0

@@ -26,10 +26,11 @@ def distinguishing_partitions(n):
 				continue
 			processed.add(el)
 			yield el
+
 def distinguishing_partition_assignment(n):
-				for partition in distinguishing_partitions(n):
-								for permutation in itertools.permutations(range(len(partition))):
-												yield (partition, permutation)
+	for partition in distinguishing_partitions(n):
+		for permutation in itertools.permutations(range(len(partition))):
+			yield (partition, permutation)
 								
 
 
@@ -59,6 +60,7 @@ for z in range(1,n+1):
 from collections import Counter
 assert Counter(strings[0]) == Counter(strings[1]), "Parikh vector of both input strings mismatch!"
 
+best_factorization = None
 
 is_finished = False
 start_time = time.time()
@@ -70,7 +72,7 @@ with tqdm(generator, total=num_combinations) as t:
 			break
 		lenT = [0]*len(lenS)
 		for x in range(len(lenS)):
-			lenT[x] = lenS[pi[x]]
+			lenT[pi[x]] = lenS[x]
 
 		posS = [0]
 		posT = [0]
@@ -78,11 +80,17 @@ with tqdm(generator, total=num_combinations) as t:
 			posS.append(posS[-1] + lenS[x])
 			posT.append(posT[-1] + lenT[x])
 
-		# print(f"partS={lenS} posS={posS} partT={lenT} posT={posT}")
+		# verbose=False
+		# # if len(lenS) == 3: # and lenS == (2, 2, 2): # and lenT == [2,2,2]:
+		# verbose = True
+		# if verbose:
+		# 	print(f"partS={lenS} posS={posS} partT={lenT} posT={posT} pi={pi}")
 		is_equal = True
 		for x in range(len(lenS)):
 			y = pi[x]
-			# print(f'check {strings[0][posS[x]:posS[x]+lenS[x]]} <-> {strings[1][posT[y]:posT[y]+lenT[y]]}')
+			assert lenS[x] == lenT[y]
+			# if verbose:
+			# 	print(f'check {strings[0][posS[x]:posS[x]+lenS[x]]} <-> {strings[1][posT[y]:posT[y]+lenT[y]]}')
 			if strings[0][posS[x]:posS[x]+lenS[x]] != strings[1][posT[y]:posT[y]+lenT[y]]:
 				is_equal = False
 		if not is_equal:
@@ -90,7 +98,10 @@ with tqdm(generator, total=num_combinations) as t:
 		factors = []
 		for x in range(len(lenS)):
 			factors.append( (posS[x], posT[x], lenS[x]) )
-		t.write(f'RESULT length={len(factors)} factors={factors} seconds={time.time() - start_time}')
-		is_finished = True
-		break
+		if not best_factorization or len(factors) < len(best_factorization):
+			best_factorization = factors
+			t.set_description(f'{len(factors)}')
+
+if best_factorization:
+	print(f'RESULT length={len(best_factorization)} seconds={time.time() - start_time} factors="{best_factorization}"')
 

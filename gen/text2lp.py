@@ -7,6 +7,8 @@ charno=0
 with open(sys.argv[1], "r") as istream:
 	strings = istream.read().splitlines()
 
+assert len(strings) > 0
+
 stringno=0
 for line in strings:
 	charno=0

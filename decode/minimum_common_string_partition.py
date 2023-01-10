@@ -35,7 +35,7 @@ def decode(modelstring : str, strings):
 			assert strings[0][ppos[p_it]+l] == strings[1][qpos[q_it]+l], f'strings mismatch at positions {ppos[p_it]+l} and {qpos[q_it]+l} with length l={l} : {strings[0][ppos[p_it]+l]} and {strings[1][qpos[q_it]+l]}'
 		factors.append( (ppos[p_it], qpos[q_it], plength))
 
-	print(f'RESULT factors={factors} length={len(factors)}')
+	print(f'RESULT length={len(factors)} factors="{factors}"')
 
 import argparse
 
