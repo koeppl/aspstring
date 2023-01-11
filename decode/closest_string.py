@@ -55,6 +55,6 @@ outputlength = args.length
 strings = open(plaininputfilename, 'r').read().splitlines()
 
 (text, maxcost) = decode(dec.extract_clingolog(clingologfilename), strings, outputlength)
-(total_secs, solve_secs) = dec.extract_time(clingologfilename)
+stats = dec.extract_stats(clingologfilename)
 
-print(f'RESULT closeststring={"".join(text)} input={inputbasename} distance={maxcost} solve_seconds={solve_secs} seconds={total_secs} length={args.length}')
+print(f'RESULT type=csp method=asp output={"".join(text)} input={inputbasename} distance={maxcost} length={args.length} {stats}')

@@ -2,6 +2,7 @@
 import itertools
 import time
 from tqdm import tqdm
+from pathlib import Path 
 
 import argparse
 
@@ -37,9 +38,11 @@ def distinguishing_partition_assignment(n):
 
 parser = argparse.ArgumentParser(description='compute closest substring')
 parser.add_argument("--input", type=str, help="input file")
+parser.add_argument("--quiet", action=argparse.BooleanOptionalAction, help="no progress bar", default=False)
 args = parser.parse_args()
 
-plaininputfilename = args.input
+plaininputfilename = Path(args.input)
+inputbasename = Path(plaininputfilename).with_suffix('').name
 
 strings=[]
 
@@ -64,7 +67,7 @@ best_factorization = None
 
 is_finished = False
 start_time = time.time()
-with tqdm(generator, total=num_combinations) as t:
+with tqdm(generator, total=num_combinations, disable=args.quiet) as t:
 	for (lenS, pi) in t:
 		assert len(pi) == len(lenS)
 
@@ -103,5 +106,6 @@ with tqdm(generator, total=num_combinations) as t:
 			t.set_description(f'{len(factors)}')
 
 if best_factorization:
-	print(f'RESULT length={len(best_factorization)} seconds={time.time() - start_time} factors="{best_factorization}"')
+	factorstring = str(best_factorization).replace(' ', '')
+	print(f'RESULT type=mcsp method=brute input={inputbasename} length={len(best_factorization)} seconds={time.time() - start_time} combinations={num_combinations} output="{factorstring}"')
 

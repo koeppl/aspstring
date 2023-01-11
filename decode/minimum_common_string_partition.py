@@ -35,9 +35,10 @@ def decode(modelstring : str, strings):
 			assert strings[0][ppos[p_it]+l] == strings[1][qpos[q_it]+l], f'strings mismatch at positions {ppos[p_it]+l} and {qpos[q_it]+l} with length l={l} : {strings[0][ppos[p_it]+l]} and {strings[1][qpos[q_it]+l]}'
 		factors.append( (ppos[p_it], qpos[q_it], plength))
 
-	print(f'RESULT length={len(factors)} factors="{factors}"')
+	return factors
 
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='decode common partition')
 parser.add_argument("--log", type=str, help="log file")
@@ -47,7 +48,12 @@ args = parser.parse_args()
 
 clingologfilename = args.log
 plaininputfilename = args.input
+inputbasename = Path(plaininputfilename).with_suffix('').name
 strings = open(plaininputfilename, 'r').read().splitlines()
 
-decode(dec.extract_clingolog(clingologfilename), strings)
+factors = decode(dec.extract_clingolog(clingologfilename), strings)
+stats = dec.extract_stats(clingologfilename)
 
+factorstring = str(factors).replace(' ', '')
+
+print(f'RESULT type=mcsp method=asp input={inputbasename} length={len(factors)} output="{factorstring}" {stats}')

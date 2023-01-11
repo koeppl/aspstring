@@ -2,7 +2,7 @@
 import itertools
 from tqdm import tqdm
 import time
-
+from pathlib import Path 
 import argparse
 
 def is_subsequence(x : str, y : str):
@@ -12,9 +12,11 @@ def is_subsequence(x : str, y : str):
 
 parser = argparse.ArgumentParser(description='compute closest substring')
 parser.add_argument("--input", type=str, help="input file")
+parser.add_argument("--quiet", action=argparse.BooleanOptionalAction, help="no progress bar", default=False)
 args = parser.parse_args()
 
-plaininputfilename = args.input
+plaininputfilename = Path(args.input)
+inputbasename = Path(plaininputfilename).with_suffix('').name
 
 strings=[]
 
@@ -33,7 +35,7 @@ best_length = 0
 best_subsequence = ''
 
 start_time = time.time()
-with tqdm(generator, total=num_combinations) as t:
+with tqdm(generator, total=num_combinations, disable=args.quiet) as t:
 	for selection in t:
 		selected_chars = []
 		for i in range(len(selection)):
@@ -47,4 +49,4 @@ with tqdm(generator, total=num_combinations) as t:
 		best_length = len(selected_text)
 		best_subsequence = selected_text
 		t.set_description(f'{best_length}')
-print(f'RESULT length={best_length} subsequence="{best_subsequence}" seconds={time.time() - start_time}')
+print(f'RESULT type=lcs method=brute input={inputbasename} length={best_length} output="{best_subsequence}" seconds={time.time() - start_time} combinations={num_combinations}')

@@ -1,41 +1,36 @@
+%% INPUT of the form 'c(X,Y,C)' storing the overlap of x-th and y-th string in the value 'C'
 
-%% the maximum length of the string we want to output
-target_length(n*m).
+node(X) :- c(X,_,_).
 
-%% enumerate the characters of the alphabet
-alphabet(C) :- s(_,_,C).
+%% we omit the incoming arc of one node of the Hamilton cycle such that this node becomes our starting string
+1 { startnode(X) : node(X) } 1. 
 
-%% assume that 0 is a special character of the input!
-alphabet(0).
+%% for each node, select exactly one out-going edge
+1 { cycle(X, Y) : c(X, Y, _) } 1 :- node(X).
 
+%% for each node, select exactly one in-coming edge
+1 { cycle(X, Y) : c(X, Y, _) } 1 :- node(Y).
 
-targetposition(I) :- I = 0..N-1, target_length(N).
+%% define the transitive closure of `cycle` via reachability
+reach(X, Y) :- cycle(X, Y).
+reach(X, Z) :- reach(X, Y), cycle(Y, Z).
 
-%% (CSS1)
+%% enforce reachability
+:- not reach(X, Y), node(X), node(Y ).
 
-1 { t(I,C) : alphabet(C) } 1 :- targetposition(I).
+%% gain costs except when traversing to the start node
+gain(X,C) :- cycle(X,Y), c(X,Y,C), not startnode(Y).
 
-%% (CSS2)
+%% sum up the gained values
+gainsum(D) :- D = #sum { C,X : gain(X,C) }. 
 
-t(I+1,0) :- t(I,0), targetposition(I+1).
+%% maximize the gained values
+#maximize { D : gainsum(D) }. 
 
-%% (CSS3) 
+#show cycle/2.
+#show startnode/1.
 
-t(I,C) :- m(I,X,J), s(X,J,C).
+%% for debugging
+% #show gain/2. 
+% #show gainsum/1. 
 
-%% (CSS4)
-
-m(I-1,X,J-1) :- m(I,X,J), J > 0.
-
-%% (CSS5)
-
-1 { m(I,X,n-1) : t(I,_), I >= n-1 }  :- s(X,n-1,_).
-
-%% optimization
-
-#maximize { 1,I : t(I,0) }.
-
-%% output
-
-#show t/2.
-#show m/3.

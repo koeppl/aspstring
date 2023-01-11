@@ -18,11 +18,11 @@ def decode(modelstring : str, strings):
 	text = ''.join(text)
 	for string in strings:
 		assert string in text
-	print(f'RESULT superstring={text} length={len(text)}')
 	## check model
 	return text 
 
 import argparse
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='decode closest string')
 parser.add_argument("--log", type=str, help="log file")
@@ -32,7 +32,10 @@ args = parser.parse_args()
 
 clingologfilename = args.log
 plaininputfilename = args.input
+inputbasename = Path(plaininputfilename).with_suffix('').name
+
 strings = open(plaininputfilename, 'r').read().splitlines()
+stats = dec.extract_stats(clingologfilename)
 
-decode(dec.extract_clingolog(clingologfilename), strings)
-
+superstring = decode(dec.extract_clingolog(clingologfilename), strings)
+print(f'RESULT type=scs method=asp input={inputbasename} output={superstring} length={len(superstring)} {stats}')

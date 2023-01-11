@@ -50,12 +50,12 @@ with open(lpinputfilename,'w') as lpout:
 # solve
 with open(clingologfilename,'w') as logout:
 	if args.length == 0:
-		stat = subprocess.run(['clingo', lpfile, lpinputfilename], stdout=logout)
+		stat = subprocess.run(['clingo', '--stats', lpfile, lpinputfilename], stdout=logout)
 	else:
 		with tempfile.NamedTemporaryFile(mode='w') as lplengthfile:
 			lplengthfile.write(f'#const lambda={args.length}.')
 			lplengthfile.flush()
-			stat = subprocess.run(['clingo', lpsubstringfile, lpinputfilename, lplengthfile.name], stdout=logout)
+			stat = subprocess.run(['clingo', '--stats', lpsubstringfile, lpinputfilename, lplengthfile.name], stdout=logout)
 if stat.returncode != 30:
 	die("call to clingo failed!")
 
@@ -63,7 +63,7 @@ if stat.returncode != 30:
 with open(decodeoutputfilename,'w') as logout:
 	subprocess.run([decodeprg, '--log', clingologfilename, '--input', plaininputfilename, '--length', str(args.length)], stdout=logout)
 
-print('clingo logfile : {clingologfilename}')
-print('logfile : {decodeoutputfilename}')
+print(f'clingo logfile : {clingologfilename}')
+print(f'logfile : {decodeoutputfilename}')
 print(open(decodeoutputfilename, 'r').read())
 

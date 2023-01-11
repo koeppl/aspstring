@@ -43,6 +43,6 @@ inputbasename = Path(plaininputfilename).with_suffix('').name
 strings = open(plaininputfilename, 'r').read().splitlines()
 
 subsequence = decode(dec.extract_clingolog(clingologfilename), strings)
-(total_secs, solve_secs) = dec.extract_time(clingologfilename)
+stats = dec.extract_stats(clingologfilename)
 
-print(f'RESULT subsequence="{"".join(subsequence)}" file={inputbasename} length={len(subsequence)} solve_seconds={solve_secs} seconds={total_secs}')
+print(f'RESULT type=lcs method=asp input={inputbasename} output="{"".join(subsequence)}" length={len(subsequence)} {stats}')

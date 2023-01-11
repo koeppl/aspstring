@@ -2,9 +2,9 @@
 import itertools
 from tqdm import tqdm
 import time
-import os
+from pathlib import Path 
 
-resultPrefix='RESULT '
+resultPrefix='RESULT type=csp method=brute '
 
 def hamming_distance(textA, textB):
 	assert len(textA) <= len(textB), f'{textA} must be at least as long as {textB}'
@@ -25,7 +25,7 @@ def local_hamming_distance(text : str, string : str):
 def max_local_hamming_distance(text, strings):
 	return max(map(lambda s: local_hamming_distance(text, s), strings))
 
-def closest_string(strings):
+def closest_string(strings, quiet = False):
 	alphabets=[]
 	for i in range(len(strings[0])):
 		distinct_chars = set(map(lambda x: strings[x][i], range(len(strings))))
@@ -35,11 +35,11 @@ def closest_string(strings):
 	num_combinations = acc
 	generator = itertools.product(*alphabets)
 
-	best_distance = len(strings[0])
-	best_text = ''
+	best_text = strings[0]
+	best_distance = len(best_text)
 
 	start_time = time.time()
-	with tqdm(generator, total=num_combinations) as t:
+	with tqdm(generator, total=num_combinations, disable=quiet) as t:
 		for text in t:
 			distance = max_hamming_distance(text, strings)
 			if distance < best_distance:
@@ -48,19 +48,19 @@ def closest_string(strings):
 				best_text = text 
 				if distance == 0: 
 					break
-	print(f'{resultPrefix} distance={best_distance} closeststring={"".join(best_text)} seconds={time.time() - start_time} length=0')
+	print(f'{resultPrefix} distance={best_distance} output={"".join(best_text)} seconds={time.time() - start_time} length=0 combinations={num_combinations}')
 
-def closest_substring(strings, length : int):
+def closest_substring(strings, length : int, quiet : bool = False):
 	alphabet = set(); [alphabet := alphabet.union(set(x)) for x in strings]
 
 	generator = itertools.product(alphabet, repeat=length)
 	num_combinations = pow(len(alphabet), length)
 
-	best_distance = len(strings[0])
-	best_text = ''
+	best_text = strings[0]
+	best_distance = len(best_text)
 
 	start_time = time.time()
-	with tqdm(generator, total=num_combinations) as t:
+	with tqdm(generator, total=num_combinations, disable=quiet) as t:
 		for text in t:
 			text = ''.join(text)
 			distance = max_local_hamming_distance(text, strings)
@@ -70,7 +70,7 @@ def closest_substring(strings, length : int):
 				best_text = text 
 				if distance == 0: 
 					break
-	print(f'{resultPrefix} distance={best_distance} closeststring={"".join(best_text)} length={length} seconds={time.time() - start_time}')
+	print(f'{resultPrefix} distance={best_distance} output={"".join(best_text)} length={length} seconds={time.time() - start_time} combinations={num_combinations}')
 
 
 import argparse
@@ -78,10 +78,12 @@ import argparse
 parser = argparse.ArgumentParser(description='compute closest substring')
 parser.add_argument("--input", type=str, help="input file")
 parser.add_argument("--length", type=int, help="substring length (lambda)", default=0)
+parser.add_argument("--quiet", action=argparse.BooleanOptionalAction, help="no progress bar", default=False)
 args = parser.parse_args()
 
-plaininputfilename = args.input
-resultPrefix += f'input={os.path.basename(plaininputfilename)} '
+plaininputfilename = Path(args.input)
+inputbasename = Path(plaininputfilename).with_suffix('').name
+resultPrefix += f'input={inputbasename} '
 
 
 strings=[]
@@ -94,9 +96,9 @@ for x in range(len(strings)):
 
 
 if args.length == 0:
-	closest_string(strings)
+	closest_string(strings, args.quiet)
 else:
-	closest_substring(strings, args.length)
+	closest_substring(strings, args.length, args.quiet)
 
 
 

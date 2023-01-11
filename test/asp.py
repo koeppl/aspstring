@@ -17,7 +17,7 @@ projectpath = Path(os.path.dirname(os.path.realpath(__file__))).parent.absolute(
 aspprg = projectpath.joinpath('bin').joinpath('aspsolver.py')
 assert os.access(aspprg, os.X_OK), f'cannot execute {aspprg}'
 
-prg_names = ['longest_common_subsequence', 'shortest_superstring', 'minimum_common_string_partition']
+prg_names = ['longest_common_subsequence', 'shortest_superstring_permutation', 'minimum_common_string_partition']
 measures = ['length', 'length', 'length']
 
 brute_prgs = []

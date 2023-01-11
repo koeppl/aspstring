@@ -15,15 +15,15 @@ projectpath = Path(os.path.dirname(os.path.realpath(__file__))).parent.absolute(
 import argparse
 
 parser = argparse.ArgumentParser(description='solve problem with ASP encoding')
-parser.add_argument("--prg", type=str, help="which program to run (longest_common_subsequence, shortest_superstring, minimum_common_string_partition)", required=True)
 parser.add_argument("--input", type=str, help="input text file", required=True)
 parser.add_argument("--output", type=str, help="output stats file", default='')
 parser.add_argument("--log", type=str, help="output clingo log file", default='')
 args = parser.parse_args()
 
-genprg = projectpath.joinpath('gen').joinpath('text2lp.py')
-lpfile = projectpath.joinpath('encoding').joinpath(args.prg + '.lp')
-decodeprg = projectpath.joinpath('decode').joinpath(args.prg + '.py')
+prgname = 'shortest_superstring'
+genprg = projectpath.joinpath('gen').joinpath(prgname + '.py')
+lpfile = projectpath.joinpath('encoding').joinpath(prgname + '.lp')
+decodeprg = projectpath.joinpath('decode').joinpath(prgname + '.py')
 
 assert os.access(genprg, os.X_OK), f'cannot execute {genprg}'
 assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'
@@ -37,13 +37,13 @@ inputbasename = plaininputfilename.with_suffix('').name
 
 # os.mkdir("/tmp/asp")
 workDir=plaininputfilename.parent
-lpinputfilename = workDir.joinpath(inputbasename + '.lp') 
+lpinputfilename = workDir.joinpath(inputbasename + '.scs.lp') 
 clingologfilename = workDir.joinpath(inputbasename + '.clingo.log')  if args.log == '' else Path(args.log)
 decodeoutputfilename = workDir.joinpath(inputbasename + '.decode.log') if args.output == '' else Path(args.output)
 
 # generate clingo files
 with open(lpinputfilename,'w') as lpout:
-	subprocess.check_call([genprg, plaininputfilename], stdout=lpout)
+	subprocess.check_call([genprg, '--input', plaininputfilename], stdout=lpout)
 
 # solve
 with open(clingologfilename,'w') as logout:

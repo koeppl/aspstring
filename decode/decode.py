@@ -1,13 +1,13 @@
 import re
 import typing as t
 
-def unary_function(fnname : str, coding :str):
-	return int(re.sub(fnname + r'\(([0-9]+)\)', r'\1', coding))
-def binary_function(fnname : str, coding :str):
-	return tuple(map(lambda x: int(x), re.sub(fnname + r'\(([0-9]+),([0-9]+)\)', r'\1 \2', coding).split(' ')))
+def unary_function(fnTime : str, coding :str):
+	return int(re.sub(fnTime + r'\(([0-9]+)\)', r'\1', coding))
+def binary_function(fnTime : str, coding :str):
+	return tuple(map(lambda x: int(x), re.sub(fnTime + r'\(([0-9]+),([0-9]+)\)', r'\1 \2', coding).split(' ')))
 
-def ternary_function(fnname : str, coding :str):
-	return tuple(map(lambda x: int(x), re.sub(fnname + r'\(([0-9]+),([0-9]+),([0-9]+)\)', r'\1 \2 \3', coding).split(' ')))
+def ternary_function(fnTime : str, coding :str):
+	return tuple(map(lambda x: int(x), re.sub(fnTime + r'\(([0-9]+),([0-9]+),([0-9]+)\)', r'\1 \2 \3', coding).split(' ')))
 
 def hamming_distance(textA, textB):
 	assert len(textA) <= len(textB), f'{textA} must be at least as long as {textB}'
@@ -22,12 +22,24 @@ def extract_clingolog(clingologfilename : str):
 				return lines[row-2]
 		return ''
 
-fnname='Time '
+fnTime='Time '
 flreg=r'(\d+\.?\d+)'
-myregex = fnname + r'\s*:\s*' + flreg + r's.* \(Solving: ' + flreg + r's.*'
-def extract_time(clingologfilename : str) -> t.Tuple[float,float]:
-		for line in open(clingologfilename,'r').readlines():
-			if line.startswith(fnname):
-				match = re.sub(myregex, r'\1 \2', line)
-				return tuple(map(lambda x: float(x), match.split(' ')))
-		return (0,0)
+timeRegex = fnTime + r'\s*:\s*' + flreg + r's.* \(Solving: ' + flreg + r's.*'
+
+def extract_stats(clingologfilename : str) -> str:
+	variables = 0
+	rules = 0
+	constraints = 0
+	seconds = 0.0
+	solve_seconds = 0.0
+	for line in open(clingologfilename,'r').readlines():
+		if line.startswith('Variables '):
+			variables = int(re.sub(r'Variables\s*:\s*([0-9]+).*', r'\1', line))
+		elif line.startswith('Constraints '):
+			constraints = int(re.sub(r'Constraints\s*:\s*([0-9]+).*', r'\1', line))
+		elif line.startswith('Rules '):
+			rules = int(re.sub(r'Rules\s*:\s*([0-9]+).*', r'\1', line))
+		elif line.startswith(fnTime):
+			match = re.sub(timeRegex, r'\1 \2', line)
+			(seconds, solve_seconds) = tuple(map(lambda x: float(x), match.split(' ')))
+	return f'variables={variables} rules={rules} constraints={constraints} seconds={seconds} solve_seconds={solve_seconds}'
