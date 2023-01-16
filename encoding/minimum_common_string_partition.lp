@@ -11,30 +11,17 @@ q(0).
 %% potential reference from T[t] to S[s]
 arc(I,J) :- s(0,I,C), s(1,J,C).
 
-%% (1)
+1 { ref(I,J) : arc(I,J) } 1 :- spos(I).  %% (MCSP1)
 
-1 { ref(I,J) : arc(I,J) } 1 :- spos(I).
+1 { ref(I,J) : arc(I,J) } 1 :- tpos(J).  %% (MCSP2)
 
-%% (2)
+q(J) :- p(I), ref(I,J). %% (MCSP3)
 
-1 { ref(I,J) : arc(I,J) } 1 :- tpos(J). 
+p(I) :- q(J), ref(I,J). %% (MCSP4)
 
+p(I) :- ref(I,J), s(0,I-1,C), s(1,J-1,D), C != D.  %% (MCSP5)
 
-%% (3)
-q(J) :- p(I), ref(I,J).
-
-%% (4)
-
-p(I) :- q(J), ref(I,J).
-
-
-%% (5)
-p(I) :- ref(I,J), s(0,I-1,C), s(1,J-1,D), C != D.
-
-%% (6)
-p(I) :- not ref(I-1, J-1), ref(I, J).
-
-
+p(I) :- not ref(I-1, J-1), ref(I, J). %% (MCSP6)
 
 %% objective
 #minimize { 1,X : p(X) }.

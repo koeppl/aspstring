@@ -2,26 +2,21 @@
 
 node(X) :- w(X,_,_).
 
-%% (SCS1)
 %% for each node, select exactly one out-going edge
-1 { cycle(X, Y) : w(X, Y, _) } 1 :- node(X).
+1 { cycle(X, Y) : w(X, Y, _) } 1 :- node(X).  %% (SCS1)
 
 %% for each node, select exactly one in-coming edge
 1 { cycle(X, Y) : w(X, Y, _) } 1 :- node(Y).
 
-%% (SCS2)
 %% define the transitive closure of `cycle` via reachability
-reach(X, Y) :- cycle(X, Y).
-%% (SCS3)
-reach(X, Z) :- reach(X, Y), cycle(Y, Z).
+reach(X, Y) :- cycle(X, Y).  %% (SCS2)
+reach(X, Z) :- reach(X, Y), cycle(Y, Z).  %% (SCS3)
 
-%% (SCS4)
 %% enforce reachability
-:- not reach(X, Y), node(X), node(Y).
+:- not reach(X, Y), node(X), node(Y).  %% (SCS4)
 
-%% (SCS5)
 %% we omit the incoming arc of one node of the Hamilton cycle such that this node becomes our starting string
-1 { startnode(X) : node(X) } 1. 
+1 { startnode(X) : node(X) } 1.  %% (SCS5)
 
 %%% gain costs except when traversing to the start node
 %gain(X,C) :- cycle(X,Y), w(X,Y,C), not startnode(Y).
@@ -29,9 +24,8 @@ reach(X, Z) :- reach(X, Y), cycle(Y, Z).
 %%% sum up the gained values
 %gainsum(D) :- D = #sum { C,X : gain(X,C) }. 
 
-%% (SCS6)
 %% maximize the gained values
-gainsum(D) :- D = #sum { C,X : cycle(X,Y), w(X,Y,C), not startnode(Y) }. 
+gainsum(D) :- D = #sum { C,X : cycle(X,Y), w(X,Y,C), not startnode(Y) }.  % (SCS6)
 #maximize { D : gainsum(D) }. 
 
 #show cycle/2.

@@ -3,12 +3,8 @@
 %% You need to add the following additional line in the input to specify the length of the substring to return:
 % #const lambda=3. 
 
-%%%
-
 %% set the entries in the matrix to true that are defined by the input
 mat(X,I) :- s(X,I,_).
-
-
 
 %% select an offset for each string
 
@@ -22,7 +18,7 @@ sigma(I,C) :- s(X,J,C), d(X,D), J-D >= 0, I = J-D.
 1 {t(I,C) : sigma(I,C) } 1 :- mat(_,I), I < lambda.
 
 %% CS2
-c(X,I) :- t(I,C), s(X,J, A), d(X,D), I+D == J, I < lambda, A != C.
+c(X,I) :- t(I,C), s(X,J, A), d(X,D), I+D == J, I < lambda, A != C. %% (CSS2)
 
 % %% CS3  
 % not c(L,I) :- t(X,I), s(X,I, C), s(L,I,C). 
