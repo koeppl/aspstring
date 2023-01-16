@@ -41,8 +41,8 @@ import argparse
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description='decode common partition')
-parser.add_argument("--log", type=str, help="log file")
-parser.add_argument("--input", type=str, help="input file")
+parser.add_argument("--log", type=str, help="log file", required=True)
+parser.add_argument("--input", type=str, help="input file", required=True)
 args = parser.parse_args()
 
 

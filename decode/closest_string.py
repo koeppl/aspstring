@@ -42,8 +42,8 @@ import argparse
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description='decode closest string')
-parser.add_argument("--log", type=str, help="log file")
-parser.add_argument("--input", type=str, help="input file")
+parser.add_argument("--log", type=str, help="log file", required=True)
+parser.add_argument("--input", type=str, help="input file", required=True)
 parser.add_argument("--length", type=int, help="substring length (lambda)", default=0)
 args = parser.parse_args()
 

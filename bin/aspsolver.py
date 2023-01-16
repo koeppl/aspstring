@@ -43,7 +43,7 @@ decodeoutputfilename = workDir.joinpath(inputbasename + '.decode.log') if args.o
 
 # generate clingo files
 with open(lpinputfilename,'w') as lpout:
-	subprocess.check_call([genprg, plaininputfilename], stdout=lpout)
+	subprocess.check_call([genprg, '--input', plaininputfilename], stdout=lpout)
 
 # solve
 with open(clingologfilename,'w') as logout:

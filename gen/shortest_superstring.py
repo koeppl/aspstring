@@ -11,8 +11,8 @@ def overlap(textA : str, textB : str) -> int:
 			return length
 	return 0
 
-parser = argparse.ArgumentParser(description='compute closest substring')
-parser.add_argument("--input", type=str, help="input file")
+parser = argparse.ArgumentParser(description='convert input text file into LP file required for shortest superstring encoding')
+parser.add_argument("--input", type=str, help="input file", required=True)
 args = parser.parse_args()
 
 
@@ -30,5 +30,5 @@ for i, stri in enumerate(strings):
 		for j, strj in enumerate(strings):
 				if i == j:
 					continue
-				print(f'c({i},{j},{overlap(stri,strj)}).')
+				print(f'w({i},{j},{overlap(stri,strj)}).')
 

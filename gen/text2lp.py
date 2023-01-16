@@ -3,6 +3,10 @@
 from typing import Dict
 import sys
 
+parser = argparse.ArgumentParser(description='convert input text file into LP file')
+parser.add_argument("--input", type=str, help="input file", required=True)
+args = parser.parse_args()
+
 charno=0
 with open(sys.argv[1], "r") as istream:
 	strings = istream.read().splitlines()
@@ -22,10 +26,10 @@ for line in strings:
 print(f'#const n={charno}.')
 print(f'#const m={stringno}.')
 
-majoritystring = [0]*len(strings[0])
-for charno in range(len(strings[0])):
-	characters = list(map(lambda x: strings[x][charno], range(len(strings))))
-	statistics : Dict[str, int] = {c : characters.count(c) for c in set(characters)}
-	character = max(statistics, key=statistics.get) # type: ignore (causes an error in old pyright)
-	print(f'majority({charno}, {ord(character)}).')
+# majoritystring = [0]*len(strings[0])
+# for charno in range(len(strings[0])):
+# 	characters = list(map(lambda x: strings[x][charno], range(len(strings))))
+# 	statistics : Dict[str, int] = {c : characters.count(c) for c in set(characters)}
+# 	character = max(statistics, key=statistics.get) # type: ignore (causes an error in old pyright)
+# 	print(f'majority({charno}, {ord(character)}).')
 

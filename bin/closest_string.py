@@ -28,7 +28,7 @@ assert os.access(decodeprg, os.X_OK), f'cannot execute {decodeprg}'
 import argparse
 
 parser = argparse.ArgumentParser(description='compute closest substring')
-parser.add_argument("--input", type=str, help="input text file")
+parser.add_argument("--input", type=str, help="input text file", required=True)
 parser.add_argument("--output", type=str, help="output stats file", default='')
 parser.add_argument("--log", type=str, help="output clingo log file", default='')
 parser.add_argument("--length", type=int, help="substring length (lambda)", default=0)
@@ -45,7 +45,7 @@ decodeoutputfilename = workDir.joinpath(inputbasename + '.decode.log') if args.o
 
 # generate clingo files
 with open(lpinputfilename,'w') as lpout:
-	subprocess.check_call([genprg, plaininputfilename], stdout=lpout)
+	subprocess.check_call([genprg, '--input', plaininputfilename], stdout=lpout)
 
 # solve
 with open(clingologfilename,'w') as logout:
