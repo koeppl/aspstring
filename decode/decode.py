@@ -26,20 +26,28 @@ fnTime='Time '
 flreg=r'(\d+\.?\d+)'
 timeRegex = fnTime + r'\s*:\s*' + flreg + r's.* \(Solving: ' + flreg + r's.*'
 
+
+def extract_stat(line : str, keyword : str) -> int:
+	return int(re.sub(keyword + r'\s*:\s*([0-9]+).*', r'\1', line))
+
+
 def extract_stats(clingologfilename : str) -> str:
-	variables = 0
-	rules = 0
-	constraints = 0
 	seconds = 0.0
 	solve_seconds = 0.0
+
+	keywords = ['Variables', 'Rules', 'Constraints', 'Choices', 'Conflicts']
+	stats = dict()
+	
+
 	for line in open(clingologfilename,'r').readlines():
-		if line.startswith('Variables '):
-			variables = int(re.sub(r'Variables\s*:\s*([0-9]+).*', r'\1', line))
-		elif line.startswith('Constraints '):
-			constraints = int(re.sub(r'Constraints\s*:\s*([0-9]+).*', r'\1', line))
-		elif line.startswith('Rules '):
-			rules = int(re.sub(r'Rules\s*:\s*([0-9]+).*', r'\1', line))
-		elif line.startswith(fnTime):
+		for keyword in keywords:
+			if line.startswith(keyword + ' '):
+				stats[keyword.lower()] = extract_stat(line, keyword)
+				continue
+		if line.startswith(fnTime):
 			match = re.sub(timeRegex, r'\1 \2', line)
 			(seconds, solve_seconds) = tuple(map(lambda x: float(x), match.split(' ')))
-	return f'variables={variables} rules={rules} constraints={constraints} seconds={seconds} solve_seconds={solve_seconds}'
+	statstring = " ".join(list(map(lambda t: f"{t[0]}={t[1]}", stats.items())))
+
+
+	return f'{statstring} seconds={seconds} solve_seconds={solve_seconds}'

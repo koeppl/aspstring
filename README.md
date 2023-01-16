@@ -35,14 +35,24 @@ For each solution, we addiionally have a brute-force implementation in the `brut
 The parameters are identical except that we have for each problem an individual executable such that the parameter `--prg` does not exist.
  
 Each script in the `bin` folder executes a couple of commands:
-- first, it translates the plain file into a clingo readable file format, which is done by one of the scripts in the `gen` folder.
+- first, it translates the plain file into a clingo readable file format, which is done by one of the scripts in the `translate` folder.
 - second, it calls clingo with the specific ASP encoding found in the `encoding` folder
 - finally, it calls the specific decoder to extract from the clingo log file the solution. The decoders can be found in the folder `decoder`
 
 A manual step-by-step execution can be done as follows:
- - `gen/text2lp.py --input <TEXT-FILE> > <LP-FILE>`
+ - `translate/text2lp.py --input <TEXT-FILE> > <LP-FILE>`
  - `clingo encoding/closest_string.lp <LP-FILE> > <CLINGO-LOG>`
  - `decode/closest_string.py --input <TEXT-FILE> --log <CLINGO-LOG>`
+
+# Datasets
+
+The used datasets can be generated or downloaded with scripts in the `gen` folder.
+
+ `gen/generate_datasets.sh` downloads and generates the datasets used in the paper. 
+ It creates the directories
+  - `covid19` with shuffled prefixes of the covid19 FASTA reference file
+	- `random` for the randomly generated datasets
+	- `dssp` from the [https://github.com/jeanpttorres/dssp](Distinguishing String Selection Problem) project
 
 
 # Misc

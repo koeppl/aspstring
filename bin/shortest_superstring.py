@@ -21,11 +21,11 @@ parser.add_argument("--log", type=str, help="output clingo log file", default=''
 args = parser.parse_args()
 
 prgname = 'shortest_superstring'
-genprg = projectpath.joinpath('gen').joinpath(prgname + '.py')
+transprg = projectpath.joinpath('translate').joinpath(prgname + '.py')
 lpfile = projectpath.joinpath('encoding').joinpath(prgname + '.lp')
 decodeprg = projectpath.joinpath('decode').joinpath(prgname + '.py')
 
-assert os.access(genprg, os.X_OK), f'cannot execute {genprg}'
+assert os.access(transprg, os.X_OK), f'cannot execute {transprg}'
 assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'
 assert os.access(decodeprg, os.X_OK), f'cannot execute {decodeprg}'
 
@@ -43,7 +43,7 @@ decodeoutputfilename = workDir.joinpath(inputbasename + '.decode.log') if args.o
 
 # generate clingo files
 with open(lpinputfilename,'w') as lpout:
-	subprocess.check_call([genprg, '--input', plaininputfilename], stdout=lpout)
+	subprocess.check_call([transprg, '--input', plaininputfilename], stdout=lpout)
 
 # solve
 with open(clingologfilename,'w') as logout:

@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
-from typing import Dict
-import sys
+import argparse
 
 parser = argparse.ArgumentParser(description='convert input text file into LP file')
 parser.add_argument("--input", type=str, help="input file", required=True)
 args = parser.parse_args()
 
 charno=0
-with open(sys.argv[1], "r") as istream:
+with open(args.input, "r") as istream:
 	strings = istream.read().splitlines()
 
 assert len(strings) > 0

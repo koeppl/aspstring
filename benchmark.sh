@@ -28,9 +28,11 @@ function evaluate_csp {
 	dataset="$1"
 	./bin/fileinfo.py --input "$dataset"
 	./bin/closest_string.py --input "$dataset" 
-	./bin/closest_string.py --input "$dataset" --length 5
 	./brute/closest_string.py --quiet --input "$dataset"
-	./brute/closest_string.py --quiet --input "$dataset" --length 5
+	for length in 7 8 9; do
+		./brute/closest_string.py --quiet --input "$dataset" --length "$length"
+		./bin/closest_string.py --input "$dataset" --length "$length"
+	done
 }
 
 function evaluate_lcs {
@@ -53,10 +55,11 @@ function evaluate_mcsp {
 	./bin/aspsolver.py --input "$dataset" --prg "minimum_common_string_partition" 
  	./brute/minimum_common_string_partition.py --quiet --input "$dataset"
 }
+echo evaluation/scs/*.txt | xargs -n1 | env_parallel evaluate_scs
 echo evaluation/mcsp/*.txt | xargs -n1 | env_parallel evaluate_mcsp
 echo evaluation/lcs/*.txt | xargs -n1 | env_parallel evaluate_lcs
 echo evaluation/csp/*.txt | xargs -n1 | env_parallel evaluate_csp
-echo evaluation/scs/*.txt | xargs -n1 | env_parallel evaluate_scs
+
 # echo evaluation/mcsp/*.txt > mcsp_datasets.txt
 
 # echo evaluation/2*.txt > datasets_mcsp.txt
