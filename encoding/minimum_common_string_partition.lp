@@ -24,7 +24,7 @@ p(I) :- ref(I,J), s(0,I-1,C), s(1,J-1,D), C != D.  %% (MCSP5)
 p(I) :- not ref(I-1, J-1), ref(I, J). %% (MCSP6)
 
 %% objective
-#minimize { 1,X : p(X) }.
+#minimize { 1,X : p(X) }. %% (MCSP7)
 
 #show ref/2.
 #show p/1.

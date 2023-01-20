@@ -14,20 +14,17 @@ mat(X,I) :- s(X,I,_).
 
 sigma(I,C) :- s(X,J,C), d(X,D), J-D >= 0, I = J-D.
 
-%% CS1 to let T[i] point to one of the characters of s_k[i], we set t(X,I) to true
-1 {t(I,C) : sigma(I,C) } 1 :- mat(_,I), I < lambda.
+%% to let T[i] point to one of the characters of s_k[i], we set t(X,I) to true
+1 {t(I,C) : sigma(I,C) } 1 :- mat(_,I), I < lambda. %% (CSP1)
 
-%% CS2
 c(X,I) :- t(I,C), s(X,J, A), d(X,D), I+D == J, I < lambda, A != C. %% (CSS2)
 
 % %% CS3  
 % not c(L,I) :- t(X,I), s(X,I, C), s(L,I,C). 
 
-%% CS4
-cost(X,C) :- C = #sum { 1,I : c(X,I) }, mat(X,_).
+cost(X,C) :- C = #sum { 1,I : c(X,I) }, mat(X,_). %% (CSP3)
 maxcost(M) :- M = #max { C : cost(_,C) }.
 #minimize { M : maxcost(M) }.
-
 
 %% output
 

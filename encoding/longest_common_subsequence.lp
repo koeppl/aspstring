@@ -29,7 +29,7 @@ v(0,L) :- v(M,L), num_strings(M).
 :- c(0,L,J), c(M,L,I), s(M,I,D), not s(0,J,D), num_strings(M).
 
 
-1 { c(X,L,I) : mat(X,I), I >= L } :- v(X,L).  %# (LCS6)
+1 { c(X,L,I) : mat(X,I), I >= L } :- v(X,L).  %% (LCS6)
 
 %% (LCS5')
 

@@ -25,10 +25,12 @@ for line in strings:
 print(f'#const n={charno}.')
 print(f'#const m={stringno}.')
 
+### heurstics for CSP
+# import typing as t
 # majoritystring = [0]*len(strings[0])
 # for charno in range(len(strings[0])):
 # 	characters = list(map(lambda x: strings[x][charno], range(len(strings))))
-# 	statistics : Dict[str, int] = {c : characters.count(c) for c in set(characters)}
+# 	statistics : t.Dict[str, int] = {c : characters.count(c) for c in set(characters)}
 # 	character = max(statistics, key=statistics.get) # type: ignore (causes an error in old pyright)
-# 	print(f'majority({charno}, {ord(character)}).')
+# 	print(f'#heuristic t({charno}, {ord(character)}). [1,sign]')
 

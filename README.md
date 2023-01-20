@@ -54,6 +54,31 @@ The used datasets can be generated or downloaded with scripts in the `gen` folde
 	- `random` for the randomly generated datasets
 	- `dssp` from the [https://github.com/jeanpttorres/dssp](Distinguishing String Selection Problem) project
 
+# Examples in the Paper
+
+The solutions to the figures in the paper can be re-evalidated with the files in the `sample` folder with the name 
+`sleeplessness.{PRG}.txt`:
+
+with ASP:
+
+```shell
+./bin/closest_string.py --input sample/sleeplessness.csp.txt
+./bin/closest_string.py --length 4 --input sample/sleeplessness.css.txt
+./bin/aspsolver.py --prg longest_common_subsequence --input sample/sleeplessness.lcs.txt
+./bin/aspsolver.py --prg minimum_common_string_partition --input sample/sleeplessness.mcsp.txt
+./bin/shortest_superstring.py --input sample/sleeplessness.scs.txt
+```
+
+with python implementations of the brute-force algorithms:
+
+```shell
+./brute/closest_string.py --input sample/sleeplessness.csp.txt
+./brute/closest_string.py --length 4 --input sample/sleeplessness.css.txt
+./brute/longest_common_subsequence.py --input sample/sleeplessness.lcs.txt
+./brute/shortest_superstring.py --input sample/sleeplessness.scs.txt
+./brute/minimum_common_string_partition.py --input sample/sleeplessness.mcsp.txt 
+```
+Note that the last call will take long time.
 
 # Misc
 

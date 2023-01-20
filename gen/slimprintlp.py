@@ -12,4 +12,4 @@ for line in open(sys.argv[1], "r").read().splitlines():
     if line.find("%% (") == -1:
         print(line)
         continue
-    print(re.sub(r'%% \(([^)]+)\)', r'%% (\\ref{eq\1})', line))
+    print(re.sub(r'%% \(([^)]+)\)', r'%(@\\ref{eq\1}@)', line))

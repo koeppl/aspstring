@@ -16,20 +16,20 @@ reach(X, Z) :- reach(X, Y), cycle(Y, Z).  %% (SCS3)
 :- not reach(X, Y), node(X), node(Y).  %% (SCS4)
 
 %% we omit the incoming arc of one node of the Hamilton cycle such that this node becomes our starting string
-1 { startnode(X) : node(X) } 1.  %% (SCS5)
+1 { start(X) : node(X) } 1.  %% (SCS5)
 
 %%% gain costs except when traversing to the start node
-%gain(X,C) :- cycle(X,Y), w(X,Y,C), not startnode(Y).
+%gain(X,C) :- cycle(X,Y), w(X,Y,C), not start(Y).
 %
 %%% sum up the gained values
 %gainsum(D) :- D = #sum { C,X : gain(X,C) }. 
 
 %% maximize the gained values
-gainsum(D) :- D = #sum { C,X : cycle(X,Y), w(X,Y,C), not startnode(Y) }.  % (SCS6)
+gainsum(D) :- D = #sum { C,X : cycle(X,Y), w(X,Y,C), not start(Y) }.  %% (SCS6)
 #maximize { D : gainsum(D) }. 
 
 #show cycle/2.
-#show startnode/1.
+#show start/1.
 
 %% for debugging
 % #show gain/2. 
