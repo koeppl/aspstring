@@ -7,17 +7,17 @@ mat(X,I) :- s(X,I,_).
 sigma(I,C) :- s(_,I,C). 
 
 %% CS1 to let T[i] point to one of the characters of s_k[i], we set t(X,I) to true
-1 {t(I,C) : sigma(I,C) } 1 :- mat(_,I). %% (CSP1)
+1 {t(I,C) : sigma(I,C)} 1 :- mat(_,I). %% (CSP1)
 
 c(X,I) :- t(I,C), s(X,I, A), C != A. %% (CSP2)
 
-cost(X,C) :- C = #sum { 1,I : c(X,I) }, mat(X,_). %% (CSP3)
-maxcost(M) :- M = #max { C : cost(_,C) }.
-#minimize { M : maxcost(M) }. 
+cost(X,C) :- C = #sum {1,I : c(X,I)}, mat(X,_). %% (CSP3)
+mcost(M) :- M = #max {C : cost(_,C)}.
+#minimize {M : mcost(M)}. 
 
 
 %% output
 
 #show t/2.
-#show maxcost/1.
+#show mcost/1.
 #show cost/2.

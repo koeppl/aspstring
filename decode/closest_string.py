@@ -8,8 +8,8 @@ def decode(modelstring : str, strings, outputlength : int) -> t.Tuple[str, int]:
 	cost = {}	
 	maxcost = 0
 	for el in modelstring.split(' '):
-		if el.startswith('maxcost('):
-			maxcost = dec.unary_function('maxcost', el)
+		if el.startswith('mcost('):
+			maxcost = dec.unary_function('mcost', el)
 		elif el.startswith('t('):
 			(key,val) = dec.binary_function('t', el)
 			textdic[key] = val

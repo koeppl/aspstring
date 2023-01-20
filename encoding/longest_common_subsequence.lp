@@ -8,12 +8,12 @@ num_strings(m-1).
 %% set the entries in the matrix to true that are defined by the input
 mat(X,I) :- s(X,I,_).
 
-{ c(X,L,I) : mat(X,I), I >= L } 1 :- mat(X,L). %% (LCS1)
+{c(X,L,I) : mat(X,I), I >= L} 1 :- mat(X,L). %% (LCS1)
 
 % only for security:
 % I >= L :- c(X,L,I), mat(X,L). 
 
-1 { c(X,L,J) : J < I, mat(X,J) } 1 :- c(X,L+1,I), mat(X,L), mat(X,L+1). %% (LCS2)
+1 {c(X,L,J) : J < I, mat(X,J)} 1 :- c(X,L+1,I), mat(X,L), mat(X,L+1). %% (LCS2)
 
 
 v(X,L) :- c(X,L,I), mat(X,I), mat(X,L).  %% (LCS3)
@@ -37,7 +37,7 @@ v(0,L) :- v(M,L), num_strings(M).
 % 1 { c(0,L,J) : s(0,J,C) } 1 :- c(M,L,I), s(M,I,C), num_strings(M). 
 
 
-#maximize { 1,L : v(0,L) }.  %% (LCS7)
+#maximize {1,L : v(0,L)}.  %% (LCS7)
 
 %% output
 

@@ -22,6 +22,8 @@ bruteprg = projectpath.joinpath('brute').joinpath(prgname + '.py')
 assert os.access(bruteprg, os.X_OK), f'cannot execute {bruteprg}'
 assert os.access(aspprg, os.X_OK), f'cannot execute {aspprg}'
 
+# workDir="/tmp/asp"
+# if True:
 with tempfile.TemporaryDirectory(prefix='aspstr') as workDir:
 	print(f'create tempdir at {workDir}')
 	plaininputfilename = Path(workDir).joinpath('input.txt') 
