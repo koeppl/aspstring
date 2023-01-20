@@ -20,7 +20,8 @@ def split_resultline(line: str) -> t.Mapping[str,str]:
 	""" read a RESULT line and put the keyvalue pairs into a dict """
 	return split_keyvalueline(line[len('RESULT '):].strip())
 
-def extract_result(filename : Path):
+def extract_result(filename : Path) -> t.Mapping[str,str]:
 	for line in open(filename,'r').readlines():
 		if line.startswith('RESULT '):
 			return split_resultline(line)
+	return dict()
