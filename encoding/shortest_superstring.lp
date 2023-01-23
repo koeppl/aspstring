@@ -28,8 +28,7 @@ reach(X,Z) :- reach(X,Y), cycle(Y,Z).  %% (SCS3)
 gain(D) :- D = #sum {C,X : cycle(X,Y), w(X,Y,C), not start(Y)}.  %% (SCS6)
 #maximize {D : gain(D)}. 
 
-#show cycle/2.
-#show start/1.
+#show cycle/2. #show start/1.
 
 %% for debugging
 % #show gain/2. 

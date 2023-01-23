@@ -5,8 +5,7 @@ spos(I) :- s(0,I,_).
 tpos(J) :- s(1,J,_).
 
 %% positions 0 are factor starting positions
-p(0).
-q(0).
+p(0). q(0).
 
 %% potential reference from T[t] to S[s]
 arc(I,J) :- s(0,I,C), s(1,J,C).
@@ -17,7 +16,8 @@ arc(I,J) :- s(0,I,C), s(1,J,C).
 
 q(J) :- p(I), ref(I,J). %% (MCSP3)
 
-p(I) :- q(J), ref(I,J). %% (MCSP4)
+% p(I) :- q(J), ref(I,J). %% (MCSP4) 
+p(I) :- q(1), ref(I,1). %% (MCSP4)
 
 p(I) :- ref(I,J), s(0,I-1,C), s(1,J-1,D), C != D.  %% (MCSP5)
 
@@ -26,6 +26,4 @@ p(I) :- not ref(I-1,J-1), ref(I,J). %% (MCSP6)
 %% objective
 #minimize {1,X : p(X)}. %% (MCSP7)
 
-#show ref/2.
-#show p/1.
-#show q/1.
+#show ref/2. #show p/1. #show q/1.
