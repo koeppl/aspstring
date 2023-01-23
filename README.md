@@ -1,6 +1,6 @@
 # Encoding Hard String Problems with Answer Set Programming
 
-Using answer set programming (ASP), we solve the problems 
+We solve the following problems with answer set programming (ASP)
 
  - Closest String (CSP)
  - Closest Substring (CSS)
@@ -8,18 +8,18 @@ Using answer set programming (ASP), we solve the problems
  - Minimum Common String Partition (MCSP)
  - Shortest Common Superstring (SCS)
 
-on small instances.
-
-Required Software:
+## Required Software
 
  - executable [clingo](https://github.com/potassco/clingo)
  - python3 package [tqdm](https://github.com/tqdm/tqdm) (eg. install via `pip3 install tqdm`)
 
-Input Format: 
+## Input Format
 
 - All encodings expect an input in text form, where each line is interpreted as an input string.
 - All strings are expected to have the same length.
 - For the minimum common string partition problem, we read only the first two lines.
+
+## Usage
 
 Runnable executables can be invoked by 
  - `bin/shortest_superstring.py --input <FILE>`
@@ -29,24 +29,26 @@ Runnable executables can be invoked by
  - `bin/closest_string.py --input <FILE> --length <LEN>`
  computes the closest substring of `<FILE>` with length `<LEN>`
  - `bin/aspsolver.py --prg <PRG> --input <FILE>`
- computes PRG being either longest_common_subsequence or minimum_common_string_partition
+ computes PRG being either `longest_common_subsequence` or `minimum_common_string_partition`
 
-For each solution, we addiionally have a brute-force implementation in the `brute` folder.
+## Structure
+
+For each solution, we additionally have a brute-force implementation in the `brute` folder.
 The parameters are identical except that we have for each problem an individual executable such that the parameter `--prg` does not exist.
  
 Each script in the `bin` folder executes a couple of commands:
 - first, it translates the plain file into a clingo readable file format, which is done by one of the scripts in the `translate` folder.
 - second, it calls clingo with the specific ASP encoding found in the `encoding` folder
-- finally, it calls the specific decoder to extract from the clingo log file the solution. The decoders can be found in the folder `decoder`
+- finally, it calls the specific decoder to extract the solution from the clingo log file. The decoders can be found in the folder `decoder`
 
-A manual step-by-step execution can be done as follows:
+A manual step-by-step execution can be done as follows for computing the closest string:
  - `translate/text2lp.py --input <TEXT-FILE> > <LP-FILE>`
  - `clingo encoding/closest_string.lp <LP-FILE> > <CLINGO-LOG>`
  - `decode/closest_string.py --input <TEXT-FILE> --log <CLINGO-LOG>`
 
-# Datasets
+# Datasets and Examples
 
-The used datasets can be generated or downloaded with scripts in the `gen` folder.
+The used datasets can be generated or downloaded with the scripts in the `gen` folder.
 
  `gen/generate_datasets.sh` downloads and generates the datasets used in the paper. 
  It creates the directories
@@ -67,9 +69,9 @@ cd dataset
 ../bin/shortest_superstring.py --input random/scs/s02m10n008i0.txt
 ```
 
-# Examples in the Paper
+## Examples in the Paper
 
-The solutions to the figures in the paper can be re-evalidated with the files in the `sample` folder with the name 
+The solutions to the figures in the paper can be revalidated with the files in the `sample` folder with the name 
 `sleeplessness.{PRG}.txt`:
 
 with ASP:
@@ -91,10 +93,10 @@ with python implementations of the brute-force algorithms:
 ./brute/shortest_superstring.py --input sample/sleeplessness.scs.txt
 ./brute/minimum_common_string_partition.py --input sample/sleeplessness.mcsp.txt 
 ```
-Note that the last call will take long time.
+Note that the last call will take a long time to finish.
 
 # Misc
 
-To see whether the code runs correctly, you can execute the python scripts in the `test` folder.
+To check whether the code runs correctly, you can execute the python scripts in the `test` folder.
 
 The output can be further processed by [sqlplot](https://github.com/koeppl/sqlplot).
