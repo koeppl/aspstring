@@ -54,6 +54,19 @@ The used datasets can be generated or downloaded with scripts in the `gen` folde
 	- `random` for the randomly generated datasets
 	- `dssp` from the [https://github.com/jeanpttorres/dssp](Distinguishing String Selection Problem) project
 
+## Sample Run
+
+```shell
+mkdir dataset
+cd dataset
+../gen/generate_datasets.sh
+../bin/closest_string.py --input dssp/instances/g3/rand-4-50-50-10-1.txt
+../bin/aspsolver.py --prg minimum_common_string_partition --input covid19/covid19.10.txt
+
+../bin/aspsolver.py --prg longest_common_subsequence --input random/lcs/s02m05n022i1.txt
+../bin/shortest_superstring.py --input random/scs/s02m10n008i0.txt
+```
+
 # Examples in the Paper
 
 The solutions to the figures in the paper can be re-evalidated with the files in the `sample` folder with the name 
