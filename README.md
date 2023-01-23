@@ -1,4 +1,4 @@
-# 🗂️  Encoding Hard String Problems with Answer Set Programming
+# Encoding Hard String Problems with Answer Set Programming
 
 Using answer set programming (ASP), we solve the problems 
 
@@ -52,7 +52,7 @@ The used datasets can be generated or downloaded with scripts in the `gen` folde
  It creates the directories
   - `covid19` with shuffled prefixes of the covid19 FASTA reference file
 	- `random` for the randomly generated datasets
-	- `dssp` from the [https://github.com/jeanpttorres/dssp](Distinguishing String Selection Problem) project
+	- `dssp` from the [Distinguishing String Selection Problem](https://github.com/jeanpttorres/dssp) project
 
 ## Sample Run
 
@@ -61,8 +61,8 @@ mkdir dataset
 cd dataset
 ../gen/generate_datasets.sh
 ../bin/closest_string.py --input dssp/instances/g3/rand-4-50-50-10-1.txt
+../bin/closest_string.py --length 3 --input random/csp/s05m07n009i1.txt
 ../bin/aspsolver.py --prg minimum_common_string_partition --input covid19/covid19.10.txt
-
 ../bin/aspsolver.py --prg longest_common_subsequence --input random/lcs/s02m05n022i1.txt
 ../bin/shortest_superstring.py --input random/scs/s02m10n008i0.txt
 ```
