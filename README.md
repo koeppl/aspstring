@@ -1,4 +1,5 @@
 # Encoding Hard String Problems with Answer Set Programming
+![automatic test](https://github.com/koeppl/aspstring/actions/workflows/check/badge.svg)
 
 We solve the following problems with answer set programming (ASP)
 
@@ -98,5 +99,6 @@ Note that the last call will take a long time to finish.
 # Misc
 
 To check whether the code runs correctly, you can execute the python scripts in the `test` folder.
+
 
 The output can be further processed by [sqlplot](https://github.com/koeppl/sqlplot).
