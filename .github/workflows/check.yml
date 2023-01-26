@@ -1,0 +1,12 @@
+name: build
+on: [push]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install tqdm 
+      - run: sudo apt-get install -y clingo
+      - run: python3 test/asp.py
+      - run: python3 test/closest_string.py
+      - run: python3 test/shortest_superstring.py
