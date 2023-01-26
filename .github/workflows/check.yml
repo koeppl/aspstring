@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pip install tqdm 
-      - run: sudo apt-get install -y clingo
+      - run: sudo apt-get install -y gringo
       - run: python3 test/asp.py
       - run: python3 test/closest_string.py
       - run: python3 test/shortest_superstring.py
