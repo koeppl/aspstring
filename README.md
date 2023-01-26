@@ -1,5 +1,5 @@
 # Encoding Hard String Problems with Answer Set Programming
-![automatic test](https://github.com/koeppl/aspstring/actions/workflows/check/badge.svg)
+![automatic test](https://github.com/koeppl/aspstring/actions/workflows/check.yml/badge.svg)
 
 We solve the following problems with answer set programming (ASP)
 
