@@ -11,7 +11,7 @@ mat(X,I) :- s(X,I,_).
 % sigma(I,C) :- s(_,I,C).  
 % %1 {t(I,C) : sigma(I,C)} 1 :- mat(_,I). %% (CSP1) 
 
-c(X,I) :- t(I,C), s(X,I, A), C != A. %% (CSP2)
+c(X,I) :- t(I,C), s(X,I,A), C != A. %% (CSP2)
 
 %TODO: rename cost to weight, C to W
 cost(X,C) :- C = #sum {1,I : c(X,I)}, mat(X,_). %% (CSP3)
