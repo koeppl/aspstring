@@ -54,8 +54,8 @@ The used datasets can be generated or downloaded with the scripts in the `gen` f
  `gen/generate_datasets.sh` downloads and generates the datasets used in the paper. 
  It creates the directories
   - `covid19` with shuffled prefixes of the covid19 FASTA reference file
-	- `random` for the randomly generated datasets
-	- `dssp` from the [Distinguishing String Selection Problem](https://github.com/jeanpttorres/dssp) project
+  - `random` for the randomly generated datasets
+  - `dssp` from the [Distinguishing String Selection Problem](https://github.com/jeanpttorres/dssp) project
 
 ## Sample Run
 
