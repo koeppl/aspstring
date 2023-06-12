@@ -10,17 +10,16 @@ def die(err : str):
 	print(err, file=sys.stderr)
 	sys.exit(1)
 
+
+from enum import Enum
+class Flavor(Enum):
+	cpm = 'cpm'
+	default = ''
+	def __str__(self):
+		return self.value
+
 projectpath = Path(os.path.dirname(os.path.realpath(__file__))).parent.absolute()
 
-transprg = projectpath.joinpath('translate').joinpath('text2lp.py')
-lpfile = projectpath.joinpath('encoding').joinpath('closest_string.lp')
-lpsubstringfile = projectpath.joinpath('encoding').joinpath('closest_substring.lp')
-decodeprg = projectpath.joinpath('decode').joinpath('closest_string.py')
-
-assert os.access(transprg, os.X_OK), f'cannot execute {transprg}'
-assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'
-assert os.access(lpsubstringfile, os.R_OK), f'cannot read {lpsubstringfile}'
-assert os.access(decodeprg, os.X_OK), f'cannot execute {decodeprg}'
 
 import argparse
 
@@ -29,7 +28,23 @@ parser.add_argument("--input", type=str, help="input text file", required=True)
 parser.add_argument("--output", type=str, help="output stats file", default='')
 parser.add_argument("--log", type=str, help="output clingo log file", default='')
 parser.add_argument("--length", type=int, help="substring length (lambda)", default=0)
+parser.add_argument("--flavor", help="which encoding version to run (cpm = conference version, without arguments: best version)", type=Flavor, choices=list(Flavor), default=Flavor.default)
 args = parser.parse_args()
+
+if args.flavor != Flavor.default:
+	args.flavor = '_' + str(args.flavor)
+else:
+	args.flavor = ''
+
+transprg = projectpath / ('translate') / ('text2lp.py')
+lpfile = projectpath / ('encoding') / 'closest_string' / ('closest_string' + args.flavor + '.lp')
+lpsubstringfile = projectpath / ('encoding') / 'closest_substring' / ('closest_substring' + args.flavor + '.lp')
+decodeprg = projectpath / ('decode') / ('closest_string.py')
+
+assert os.access(transprg, os.X_OK), f'cannot execute {transprg}'
+assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'
+assert os.access(lpsubstringfile, os.R_OK), f'cannot read {lpsubstringfile}'
+assert os.access(decodeprg, os.X_OK), f'cannot execute {decodeprg}'
 
 plaininputfilename = Path(args.input)
 inputbasename = plaininputfilename.with_suffix('').name

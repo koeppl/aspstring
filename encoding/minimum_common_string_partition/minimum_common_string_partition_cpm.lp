@@ -1,3 +1,4 @@
+
 %%INPUT: s(K,I, c), where the k-th string at position i has character c
 
 %% set the entries in the matrix to true that are defined by the input
@@ -26,4 +27,5 @@ p(I) :- not ref(I-1,J-1), ref(I,J). %% (MCSP6)
 %% objective
 #minimize {1,X : p(X)}. %% (MCSP7)
 
-#show ref/2. #show p/1. #show q/1.
+#show ref/2. 
+%#show p/1. #show q/1.

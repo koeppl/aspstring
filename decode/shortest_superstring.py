@@ -17,12 +17,36 @@ def decode(modelstring : str, strings):
 			textdic[key] = val
 		if el.startswith('start('):
 			startnode = dec.unary_function('start', el)
+		if el.startswith('path('):
+			(key,val) = dec.binary_function('path', el)
+			textdic[key] = val
+
+  # find the node that has no ingoing edge
+	if startnode == -1:
+		from_nodes_set = set(textdic.keys())
+		print(from_nodes_set)
+		for from_node in textdic:
+			to_node = textdic[from_node]
+			if to_node in from_nodes_set:
+				from_nodes_set.remove(to_node)
+		if len(from_nodes_set) == 1:
+			startnode = from_nodes_set.pop()
+		to_nodes_set = set(textdic.values())
+		for key in textdic:
+			if key in to_nodes_set:
+				to_nodes_set.remove(key)
+		if len(to_nodes_set) == 1: # make a cycle
+			textdic[to_nodes_set.pop()] = startnode 
+
+
 	assert startnode != -1
 
 	# print(f"textdic={textdic}, startnode={startnode}")
 	cycle_array = [startnode]
 	while True:
-		next_val = textdic[cycle_array[-1]]
+		last_node = cycle_array[-1]
+		assert last_node in textdic  # cannot move on -> this has to be the last node in case the input was not cyclic
+		next_val = textdic[last_node]
 		if next_val == cycle_array[0]:
 			break
 		cycle_array.append(textdic[cycle_array[-1]])

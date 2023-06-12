@@ -11,19 +11,31 @@ def die(err : str):
 
 projectpath = Path(os.path.dirname(os.path.realpath(__file__))).parent.absolute()
 
+from enum import Enum
+class Flavor(Enum):
+	cpm = 'cpm'
+	default = ''
+	def __str__(self):
+		return self.value
 
 import argparse
 
 parser = argparse.ArgumentParser(description='solve problem with ASP encoding')
 parser.add_argument("--input", type=str, help="input text file", required=True)
 parser.add_argument("--output", type=str, help="output stats file", default='')
+parser.add_argument("--flavor", help="which encoding version to run (cpm = conference version, without arguments: best version)", type=Flavor, choices=list(Flavor), default=Flavor.default)
 parser.add_argument("--log", type=str, help="output clingo log file", default='')
 args = parser.parse_args()
 
+if args.flavor != Flavor.default:
+	args.flavor = '_' + str(args.flavor)
+else:
+	args.flavor = ''
+
 prgname = 'shortest_superstring'
-transprg = projectpath.joinpath('translate').joinpath(prgname + '.py')
-lpfile = projectpath.joinpath('encoding').joinpath(prgname + '.lp')
-decodeprg = projectpath.joinpath('decode').joinpath(prgname + '.py')
+transprg = projectpath / ('translate') / (prgname + '.py')
+lpfile = projectpath / ('encoding') / prgname / (prgname + args.flavor + '.lp')
+decodeprg = projectpath / ('decode') / (prgname + '.py')
 
 assert os.access(transprg, os.X_OK), f'cannot execute {transprg}'
 assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'

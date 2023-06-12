@@ -32,6 +32,12 @@ Runnable executables can be invoked by
  - `bin/aspsolver.py --prg <PRG> --input <FILE>`
  computes PRG being either `longest_common_subsequence` or `minimum_common_string_partition`
 
+If there are multiple alternative encodings to choose, there should be an option `--flavor `
+Current flavors are:
+ - none: Without this argument, the default (currently best) implementation will be run.
+ This is currently due to an anonymous reviewer of CPM 2023
+ - `--flavor cpm`: use the encoding as described in the conference paper at CPM 2023
+
 ## Structure
 
 For each solution, we additionally have a brute-force implementation in the `brute` folder.

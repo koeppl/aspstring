@@ -11,19 +11,31 @@ def die(err : str):
 
 projectpath = Path(os.path.dirname(os.path.realpath(__file__))).parent.absolute()
 
+from enum import Enum
+class Flavor(Enum):
+	cpm = 'cpm'
+	default = ''
+	def __str__(self):
+		return self.value
 
 import argparse
 
 parser = argparse.ArgumentParser(description='solve problem with ASP encoding')
-parser.add_argument("--prg", type=str, help="which program to run (longest_common_subsequence, shortest_superstring, minimum_common_string_partition)", required=True)
+parser.add_argument("--prg", type=str, help="which program to run (longest_common_subsequence, shortest_superstring_permutation, minimum_common_string_partition)", required=True)
+parser.add_argument("--flavor", help="which encoding version to run (cpm = conference version, without arguments: best version)", type=Flavor, choices=list(Flavor), default=Flavor.default)
 parser.add_argument("--input", type=str, help="input text file", required=True)
 parser.add_argument("--output", type=str, help="output stats file", default='')
 parser.add_argument("--log", type=str, help="output clingo log file", default='')
 args = parser.parse_args()
 
-transprg = projectpath.joinpath('translate').joinpath('text2lp.py')
-lpfile = projectpath.joinpath('encoding').joinpath(args.prg + '.lp')
-decodeprg = projectpath.joinpath('decode').joinpath(args.prg + '.py')
+if args.flavor != Flavor.default:
+	args.flavor = '_' + str(args.flavor)
+else:
+	args.flavor = ''
+
+transprg  = projectpath / 'translate' / 'text2lp.py'
+lpfile    = projectpath / 'encoding' / args.prg / (args.prg + args.flavor + '.lp')
+decodeprg = projectpath / 'decode' / (args.prg + '.py')
 
 assert os.access(transprg, os.X_OK), f'cannot execute {transprg}'
 assert os.access(lpfile, os.R_OK), f'cannot read {lpfile}'

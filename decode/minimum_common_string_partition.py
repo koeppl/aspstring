@@ -17,7 +17,28 @@ def decode(modelstring : str, strings):
 	ppos.sort()
 	qpos.sort()
 
-	assert len(ppos) == len(qpos)
+	if len(ppos) == 0:
+		ppos = [0]
+		qpos = [0]
+		for p in ref:
+			q = ref[p]
+			if p == 0 and q > 0:
+					qpos.append(q)
+			if q == 0 and p > 0:
+					ppos.append(p)
+			if p == 0 or q == 0:
+				continue
+			prevq = ref[p-1]
+			if prevq != q-1:
+				ppos.append(p)
+				qpos.append(q)
+		ppos = sorted(list(set(ppos)))
+		qpos = sorted(list(set(qpos)))
+
+
+		startpos = sorted(ref.keys())
+
+	assert len(ppos) == len(qpos), f'list of starting positions mismatch in length: {ppos} <-> {qpos}'
 	# assert len(ref.values()) == len(qpos)
 
 	n = len(strings[0])

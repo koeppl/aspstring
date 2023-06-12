@@ -4,10 +4,43 @@ import decode as dec
 from collections import defaultdict
 
 def decode(modelstring : str, strings):
+	parsedic = dict() 
+	optimal_value = None
+	if modelstring.find('text(') != -1:
+		return decode_cpm(modelstring, strings)
+
+	for el in modelstring.split(' '):
+		if el.startswith('optimal_value('):
+			optimal_value = -dec.unary_function('optimal_value', el)
+		if el.startswith('subsequence('):
+			(l,i) = dec.binary_function('subsequence', el)
+			parsedic[l] = i
+	assert optimal_value != None
+	if len(parsedic) == 0:
+		assert optimal_value == 0
+		return ''
+	assert max(parsedic.keys())+1 == optimal_value, f"largest key {max(parsedic.keys())} is not in {optimal_value}"
+
+	subsequence = [None] * optimal_value
+
+	for i in range(optimal_value):
+		subsequence[i] = chr(parsedic[i])
+
+	for x in range(1,len(strings)):
+		matched=0
+		for i in range(len(strings[x])):
+			if strings[x][i] == subsequence[matched]:
+				matched += 1
+			if matched == len(subsequence):
+				break
+		assert matched == len(subsequence), f"could only match {matched} characters, for the subsequence {subsequence}"
+	return "".join(subsequence)
+
+def decode_cpm(modelstring : str, strings):
 	parsedic = defaultdict(dict)
 	for el in modelstring.split(' '):
-		if el.startswith('c('):
-			(x,l,i) = dec.ternary_function('c', el)
+		if el.startswith('text('):
+			(x,l,i) = dec.ternary_function('text', el)
 			parsedic[x][l] = i
 	
 	if len(parsedic) == 0: #no solution

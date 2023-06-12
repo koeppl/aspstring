@@ -21,4 +21,5 @@ mcost(M) :- M = #max {C : cost(_,C)}.
 
 %% output
 
-#show t/2. #show mcost/1. #show cost/2.
+#show t/2. 
+#show mcost/1. #show cost/2.

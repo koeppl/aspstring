@@ -2,7 +2,7 @@ import re
 import typing as t
 
 def unary_function(fnTime : str, coding :str):
-	return int(re.sub(fnTime + r'\(([0-9]+)\)', r'\1', coding))
+	return int(re.sub(fnTime + r'\((-?[0-9]+)\)', r'\1', coding))
 def binary_function(fnTime : str, coding :str):
 	return tuple(map(lambda x: int(x), re.sub(fnTime + r'\(([0-9]+),([0-9]+)\)', r'\1 \2', coding).split(' ')))
 
@@ -19,7 +19,7 @@ def extract_clingolog(clingologfilename : str):
 		for row, line in enumerate(open(clingologfilename,'r').readlines()):
 			if line.startswith('OPTIMUM FOUND'):
 				assert row > 2
-				return lines[row-2]
+				return lines[row-2].strip() + re.sub(r'^Optimization: (-?\d+)', r' optimal_value(\1)',  lines[row-1].strip())
 		return ''
 
 fnTime='Time '
