@@ -50,7 +50,7 @@ Each script in the `bin` folder executes a couple of commands:
 
 A manual step-by-step execution can be done as follows for computing the closest string:
  - `translate/text2lp.py --input <TEXT-FILE> > <LP-FILE>`
- - `clingo encoding/closest_string.lp <LP-FILE> > <CLINGO-LOG>`
+ - `clingo encoding/closest_string/closest_string.lp <LP-FILE> > <CLINGO-LOG>`
  - `decode/closest_string.py --input <TEXT-FILE> --log <CLINGO-LOG>`
 
 # Datasets and Examples
