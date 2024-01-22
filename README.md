@@ -108,3 +108,10 @@ To check whether the code runs correctly, you can execute the python scripts in 
 
 
 The output can be further processed by [sqlplot](https://github.com/koeppl/sqlplot).
+
+# Reference
+
+The results are published at CPM'24, and can be refernces as:
+
+Dominik Köppl. Encoding Hard String Problems with Answer Set Programming. In 34th Annual Symposium on Combinatorial Pattern Matching (CPM 2023). Leibniz International Proceedings in Informatics (LIPIcs), Volume 259, pp. 17:1-17:21, Schloss Dagstuhl - Leibniz-Zentrum für Informatik (2023).
+[https://doi.org/10.4230/LIPIcs.CPM.2023.17](https://doi.org/10.4230/LIPIcs.CPM.2023.17)
